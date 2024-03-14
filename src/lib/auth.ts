@@ -3,7 +3,6 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 
-import { users, accounts } from "@/database/schema";
 import { db } from "@/database/db";
 
 export const authOptions: NextAuthConfig = {

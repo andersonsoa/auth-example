@@ -13,6 +13,18 @@ export const getUserByEmail = async (email: string) => {
   }
 };
 
+export const getUserById = async (id: string) => {
+  try {
+    const emailTaken = await db.query.users.findFirst({
+      where: (users, { eq }) => eq(users.id, id),
+    });
+
+    return emailTaken;
+  } catch {
+    return null;
+  }
+};
+
 export const createNewUser = async (user: TUser) => {
   try {
     const newUser = await db.insert(users).values(user);

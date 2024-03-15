@@ -5,7 +5,7 @@ import {
   primaryKey,
 } from "drizzle-orm/sqlite-core";
 import type { AdapterAccount } from "@auth/core/adapters";
-import { randomUUID } from "node:crypto";
+import { randomUUID } from "crypto";
 
 export const users = sqliteTable("user", {
   id: text("id", { length: 36 })

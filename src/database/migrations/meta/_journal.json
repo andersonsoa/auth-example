@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1710430370059,
-      "tag": "0000_worthless_klaw",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1710431172754,
-      "tag": "0001_familiar_barracuda",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1710431538167,
-      "tag": "0002_next_betty_brant",
+      "when": 1710512151131,
+      "tag": "0000_young_payback",
       "breakpoints": true
     }
   ]

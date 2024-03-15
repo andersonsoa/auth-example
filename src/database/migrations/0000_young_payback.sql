@@ -14,9 +14,10 @@ CREATE TABLE `account` (
 );
 --> statement-breakpoint
 CREATE TABLE `user` (
-	`id` text PRIMARY KEY NOT NULL,
+	`id` text(36) PRIMARY KEY NOT NULL,
 	`name` text,
 	`email` text NOT NULL,
+	`password` text,
 	`emailVerified` integer,
 	`image` text
 );

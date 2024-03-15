@@ -39,15 +39,19 @@ export const RegisterForm = () => {
     setSuccess("");
 
     startTransition(() => {
-      register(values).then((res) => {
-        if (res.success) {
-          setSuccess(res.success);
-        }
+      register(values)
+        .then((res) => {
+          if (res.success) {
+            setSuccess(res.success);
+          }
 
-        if (res.error) {
-          setError(res.error);
-        }
-      });
+          if (res.error) {
+            setError(res.error);
+          }
+        })
+        .finally(() => {
+          form.reset();
+        });
     });
   };
 

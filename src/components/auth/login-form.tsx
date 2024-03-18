@@ -39,11 +39,12 @@ export const LoginForm = () => {
 
     startTransition(() => {
       login(values).then((res) => {
+        console.log({ res });
         // if (res.success) {
         //   setSuccess(success);
         // }
         if (res?.error) {
-          setError(error);
+          setError(res.error);
         }
       });
     });

@@ -15,11 +15,9 @@ export const users = sqliteTable("user", {
   email: text("email").notNull(),
   password: text("password"),
   emailVerified: integer("emailVerified", { mode: "timestamp_ms" }),
-  roles: text("roles").$defaultFn(() => "USER"),
+  roles: text("roles", { enum: ["USER", "ADMIN"] }).$defaultFn(() => "USER"),
   image: text("image"),
 });
-
-text("roles", { enum: ["USER", "ADMIN"] });
 
 export const accounts = sqliteTable(
   "account",
@@ -44,5 +42,15 @@ export const accounts = sqliteTable(
   }),
 );
 
+export const verificationToken = sqliteTable("verification_token", {
+  id: text("id", { length: 36 })
+    .primaryKey()
+    .$defaultFn(() => randomUUID()),
+  email: text("email"),
+  token: text("token").unique(),
+  expires: integer("expires", { mode: "timestamp" }),
+});
+
 export type TUser = typeof users.$inferInsert;
 export type TAccounts = typeof accounts.$inferInsert;
+export type TVerificationToken = typeof verificationToken.$inferInsert;

@@ -5,8 +5,8 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { db } from "@/database/db";
 import { authOptions } from "@/lib/auth.config";
 import { loginSchema } from "@/schemas";
-import { getUserByEmail, getUserById } from "@/services/user";
-import { verify } from "@/lib/crypt";
+import { getUserByEmail, getUserById, updateUserById } from "@/services/user";
+import { verify } from "@/lib/password";
 
 export const {
   handlers: { GET, POST },
@@ -19,6 +19,12 @@ export const {
     strategy: "jwt",
   },
   callbacks: {
+    async signIn(params) {
+      if (params.account?.provider !== "credentials") return true;
+      const user = await getUserById(params.user.id!);
+      if (!user?.emailVerified) return false;
+      return true;
+    },
     async jwt({ token }) {
       if (!token.sub) return token;
 
@@ -40,6 +46,14 @@ export const {
       }
 
       return session;
+    },
+  },
+  events: {
+    async linkAccount({ user }) {
+      if (!user.id) return;
+      await updateUserById(user.id, {
+        emailVerified: new Date(),
+      });
     },
   },
   ...authOptions,

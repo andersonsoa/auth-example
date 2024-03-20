@@ -3,9 +3,9 @@
 import { registerSchema } from "@/schemas";
 import { z } from "zod";
 
-import bcrypt from "bcrypt";
 import { createNewUser, getUserByEmail } from "@/services/user";
-import { hash } from "@/lib/crypt";
+import { hash } from "@/lib/password";
+import { generateVerificationToken } from "@/lib/tokens";
 
 export const register = async (data: z.infer<typeof registerSchema>) => {
   const result = registerSchema.safeParse(data);
@@ -25,14 +25,15 @@ export const register = async (data: z.infer<typeof registerSchema>) => {
       error: "E-Mail already in use.",
     };
   }
-
   await createNewUser({
     email,
     name,
     password: passwordHashed,
   });
 
+  await generateVerificationToken(email);
+
   return {
-    success: "Account has created!",
+    success: "Confirmation email are sent!",
   };
 };

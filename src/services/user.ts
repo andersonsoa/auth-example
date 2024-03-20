@@ -1,5 +1,6 @@
 import { db } from "@/database/db";
 import { TUser, users } from "@/database/schema";
+import { eq } from "drizzle-orm";
 
 export const getUserByEmail = async (email: string) => {
   try {
@@ -29,6 +30,14 @@ export const createNewUser = async (user: TUser) => {
   try {
     const newUser = await db.insert(users).values(user);
     return newUser;
+  } catch {
+    return null;
+  }
+};
+
+export const updateUserById = async (id: string, data: Partial<TUser>) => {
+  try {
+    return db.update(users).set(data).where(eq(users.id, id));
   } catch {
     return null;
   }

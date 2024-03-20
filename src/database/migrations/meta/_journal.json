@@ -15,6 +15,13 @@
       "when": 1710521814205,
       "tag": "0001_wild_lilandra",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1710949550861,
+      "tag": "0002_magical_night_nurse",
+      "breakpoints": true
     }
   ]
 }

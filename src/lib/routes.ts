@@ -2,7 +2,7 @@
  * Routes that are public
  * @type {string[]}
  */
-export const publicRoutes = ["/"];
+export const publicRoutes = ["/", "/auth/new-verification"];
 
 /**
  * Routes used to Authentication

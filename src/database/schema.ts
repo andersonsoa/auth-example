@@ -46,9 +46,9 @@ export const verificationToken = sqliteTable("verification_token", {
   id: text("id", { length: 36 })
     .primaryKey()
     .$defaultFn(() => randomUUID()),
-  email: text("email"),
-  token: text("token").unique(),
-  expires: integer("expires", { mode: "timestamp" }),
+  email: text("email").notNull(),
+  token: text("token").unique().notNull(),
+  expires: integer("expires", { mode: "timestamp" }).notNull(),
 });
 
 export type TUser = typeof users.$inferInsert;

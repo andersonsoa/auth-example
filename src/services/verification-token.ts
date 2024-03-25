@@ -14,9 +14,12 @@ export const getVerificationTokenByEmail = async (email: string) => {
 
 export const getVerificationTokenByToken = async (token: string) => {
   try {
-    return db.query.verificationToken.findFirst({
+    const vToken = await db.query.verificationToken.findFirst({
       where: (verificationToken, { eq }) => eq(verificationToken.token, token),
     });
+    if (!vToken) return null;
+
+    return vToken;
   } catch {
     return null;
   }
@@ -24,7 +27,11 @@ export const getVerificationTokenByToken = async (token: string) => {
 
 export const createVerificationToken = async (data: TVerificationToken) => {
   try {
-    return db.insert(verificationToken).values(data);
+    const [vtoken] = await db.insert(verificationToken).values(data).returning({
+      email: verificationToken.email,
+      token: verificationToken.token,
+    });
+    return vtoken;
   } catch {
     return null;
   }

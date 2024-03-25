@@ -1,6 +1,7 @@
 "use server";
 
 import { signIn } from "@/lib/auth";
+import { sendVerificationMain } from "@/lib/mail";
 import { DEFAULT_LOGIN_REDIRECT } from "@/lib/routes";
 import { generateVerificationToken } from "@/lib/tokens";
 import { loginSchema } from "@/schemas";
@@ -24,7 +25,13 @@ export const login = async (data: z.infer<typeof loginSchema>) => {
   }
 
   if (!user.emailVerified) {
-    await generateVerificationToken(user.email);
+    const verificationToken = await generateVerificationToken(user.email);
+    if (verificationToken) {
+      await sendVerificationMain(
+        verificationToken.email!,
+        verificationToken.token!,
+      );
+    }
     return {
       success: "Verification E-Mail are sent!",
     };

@@ -6,6 +6,7 @@ import { z } from "zod";
 import { createNewUser, getUserByEmail } from "@/services/user";
 import { hash } from "@/lib/password";
 import { generateVerificationToken } from "@/lib/tokens";
+import { sendVerificationMain } from "@/lib/mail";
 
 export const register = async (data: z.infer<typeof registerSchema>) => {
   const result = registerSchema.safeParse(data);
@@ -31,7 +32,10 @@ export const register = async (data: z.infer<typeof registerSchema>) => {
     password: passwordHashed,
   });
 
-  await generateVerificationToken(email);
+  const verificationToken = await generateVerificationToken(email);
+  if (verificationToken) {
+    sendVerificationMain(verificationToken.email!, verificationToken.token!);
+  }
 
   return {
     success: "Confirmation email are sent!",

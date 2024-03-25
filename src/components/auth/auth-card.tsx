@@ -12,6 +12,7 @@ interface Props {
   children?: React.ReactNode;
   footerHref?: string;
   footerText?: string;
+  subtitle?: string;
 }
 
 export function AuthCard(props: Props) {
@@ -19,6 +20,7 @@ export function AuthCard(props: Props) {
     <Card className="w-[400px] shadow-md">
       <CardHeader>
         <h1 className="text-3xl font-bold text-center">{props.title}</h1>
+        <p className="text-center text-zinc-500">{props.subtitle}</p>
       </CardHeader>
       <CardContent>{props.children}</CardContent>
       <CardFooter>

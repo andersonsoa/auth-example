@@ -2,6 +2,8 @@
 
 import { newVerification } from "@/actions/new-verification";
 import { AuthCard } from "@/components/auth/auth-card";
+import { ErrorMessage } from "@/components/error-message";
+import { SuccessMessage } from "@/components/success-message";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { BeatLoader } from "react-spinners";
@@ -38,8 +40,17 @@ export const NewVerificationForm = () => {
         footerHref="/auth/login"
         footerText="Back to login."
       >
-        <div className="flex items-center w-full justify-center">
-          <BeatLoader />
+        <div className="w-full">
+          {!error && !success ? (
+            <div className="flex justify-center">
+              <BeatLoader />
+            </div>
+          ) : (
+            <>
+              {error ? <ErrorMessage message={error} /> : null}
+              {success ? <SuccessMessage message={success} /> : null}
+            </>
+          )}
         </div>
       </AuthCard>
     </div>

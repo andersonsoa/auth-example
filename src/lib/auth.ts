@@ -7,6 +7,10 @@ import { authOptions } from "@/lib/auth.config";
 import { loginSchema } from "@/schemas";
 import { getUserByEmail, getUserById, updateUserById } from "@/services/user";
 import { verify } from "@/lib/password";
+import {
+  getTwoFactorConfirmationByUserId,
+  removeTwoFactorConfirmationById,
+} from "@/services/two-factor-confirmation";
 
 export const {
   handlers: { GET, POST },
@@ -22,7 +26,21 @@ export const {
     async signIn(params) {
       if (params.account?.provider !== "credentials") return true;
       const user = await getUserById(params.user.id!);
-      if (!user?.emailVerified) return false;
+
+      if (!user?.emailVerified) {
+        return false;
+      }
+
+      if (user.isTwoFactorEnable) {
+        const tfConfirmation = await getTwoFactorConfirmationByUserId(user.id);
+
+        if (!tfConfirmation) {
+          return false;
+        }
+
+        await removeTwoFactorConfirmationById(tfConfirmation.id);
+      }
+
       return true;
     },
     async jwt({ token }) {

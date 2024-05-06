@@ -1,7 +1,10 @@
 "use server";
 
 import { getUserByEmail, updateUserById } from "@/services/user";
-import { getVerificationTokenByToken } from "@/services/verification-token";
+import {
+  getVerificationTokenByToken,
+  removeVerificationTokenByID,
+} from "@/services/verification-token";
 
 export const newVerification = async (token: string) => {
   const exitingToken = await getVerificationTokenByToken(token);
@@ -25,6 +28,8 @@ export const newVerification = async (token: string) => {
     emailVerified: new Date(),
     email: exitingToken.email,
   });
+
+  await removeVerificationTokenByID(exitingToken.id);
 
   return {
     success: "E-mail verified! enjoy",

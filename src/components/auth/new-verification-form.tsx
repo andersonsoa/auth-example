@@ -16,6 +16,7 @@ export const NewVerificationForm = () => {
   const token = searchParam.get("token");
 
   const onSubmit = useCallback(() => {
+    if (success || error) return;
     setSuccess("");
     setError("");
     if (!token) {
@@ -28,7 +29,7 @@ export const NewVerificationForm = () => {
         setError(data?.error);
       })
       .catch(() => setError("Something went wrong."));
-  }, []);
+  }, [token, success, error]);
 
   useEffect(onSubmit, [onSubmit]);
 
@@ -41,16 +42,16 @@ export const NewVerificationForm = () => {
         footerText="Back to login."
       >
         <div className="w-full">
+          <div className="flex justify-center">
           {!error && !success ? (
-            <div className="flex justify-center">
               <BeatLoader />
-            </div>
           ) : (
             <>
-              {error ? <ErrorMessage message={error} /> : null}
-              {success ? <SuccessMessage message={success} /> : null}
+              <SuccessMessage message={success} />
+              {!success ? <ErrorMessage message={error} /> : null}
             </>
           )}
+            </div>
         </div>
       </AuthCard>
     </div>

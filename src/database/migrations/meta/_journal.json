@@ -29,6 +29,27 @@
       "when": 1711329470224,
       "tag": "0003_concerned_starbolt",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1714937664505,
+      "tag": "0004_premium_black_cat",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1714938091966,
+      "tag": "0005_neat_carmella_unuscione",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1714938413048,
+      "tag": "0006_brainy_shiver_man",
+      "breakpoints": true
     }
   ]
 }

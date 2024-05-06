@@ -1,9 +1,12 @@
 "use server";
 
 import { signIn } from "@/lib/auth";
-import { sendVerificationMain } from "@/lib/mail";
+import { sendTwoFactorTokenEmail, sendVerificationMain } from "@/lib/mail";
 import { DEFAULT_LOGIN_REDIRECT } from "@/lib/routes";
-import { generateVerificationToken } from "@/lib/tokens";
+import {
+  generateTwoFactorToken,
+  generateVerificationToken,
+} from "@/lib/tokens";
 import { loginSchema } from "@/schemas";
 import { getUserByEmail } from "@/services/user";
 import { AuthError } from "next-auth";
@@ -35,6 +38,14 @@ export const login = async (data: z.infer<typeof loginSchema>) => {
     return {
       success: "Verification E-Mail are sent!",
     };
+  }
+
+  if (user.email && user.isTwoFactorEnable) {
+    const tfToken = await generateTwoFactorToken(user.email);
+    if (tfToken) {
+      await sendTwoFactorTokenEmail(tfToken.email, tfToken.token);
+    }
+    return { twoFactor: true };
   }
 
   try {

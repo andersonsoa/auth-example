@@ -1,1 +1,0 @@
-ALTER TABLE user ADD `is_two_factor_enable` integer;

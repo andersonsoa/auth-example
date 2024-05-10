@@ -8,6 +8,15 @@ import {
   generateVerificationToken,
 } from "@/lib/tokens";
 import { loginSchema } from "@/schemas";
+import {
+  createTwoFactorConfirmation,
+  getTwoFactorConfirmationByUserId,
+  removeTwoFactorConfirmationById,
+} from "@/services/two-factor-confirmation";
+import {
+  getTwoFactorTokenByEmail,
+  removeTwoFactorTokenById,
+} from "@/services/two-factor-token";
 import { getUserByEmail } from "@/services/user";
 import { AuthError } from "next-auth";
 import { z } from "zod";
@@ -19,7 +28,7 @@ export const login = async (data: z.infer<typeof loginSchema>) => {
       error: "Invalid fields.",
     };
   }
-  const { email, password } = result.data;
+  const { email, password, code } = result.data;
 
   const user = await getUserByEmail(email);
 
@@ -41,11 +50,40 @@ export const login = async (data: z.infer<typeof loginSchema>) => {
   }
 
   if (user.email && user.isTwoFactorEnable) {
-    const tfToken = await generateTwoFactorToken(user.email);
-    if (tfToken) {
-      await sendTwoFactorTokenEmail(tfToken.email, tfToken.token);
+    if (code) {
+      const existingTfToken = await getTwoFactorTokenByEmail(user.email);
+      if (!existingTfToken) {
+        return { error: "Invalid code" };
+      }
+      if (existingTfToken.token !== code) {
+        return { error: "Invalid code" };
+      }
+
+      const hasExpired = new Date(existingTfToken.expires) < new Date();
+      if (hasExpired) {
+        return { error: "Code expired" };
+      }
+
+      await removeTwoFactorTokenById(existingTfToken.id);
+
+      const existingTfConfirmation = await getTwoFactorConfirmationByUserId(
+        user.id,
+      );
+      if (existingTfConfirmation) {
+        await removeTwoFactorConfirmationById(existingTfConfirmation.id);
+      }
+
+      const tfC = await createTwoFactorConfirmation({
+        userId: user.id,
+      });
+      console.log("AQUI", { tfC });
+    } else {
+      const tfToken = await generateTwoFactorToken(user.email);
+      if (tfToken) {
+        await sendTwoFactorTokenEmail(tfToken.email, tfToken.token);
+      }
+      return { twoFactor: true };
     }
-    return { twoFactor: true };
   }
 
   try {

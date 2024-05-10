@@ -25,6 +25,7 @@ export const {
   callbacks: {
     async signIn(params) {
       if (params.account?.provider !== "credentials") return true;
+
       const user = await getUserById(params.user.id!);
 
       if (!user?.emailVerified) {
@@ -33,7 +34,6 @@ export const {
 
       if (user.isTwoFactorEnable) {
         const tfConfirmation = await getTwoFactorConfirmationByUserId(user.id);
-
         if (!tfConfirmation) {
           return false;
         }

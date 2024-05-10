@@ -1,5 +1,8 @@
 import { db } from "@/database/db";
-import { twoFactorConfirmation } from "@/database/schema";
+import {
+  TTwoFactorConfirmation,
+  twoFactorConfirmation,
+} from "@/database/schema";
 import { eq } from "drizzle-orm";
 
 export const getTwoFactorConfirmationByUserId = async (userId: string) => {
@@ -9,6 +12,23 @@ export const getTwoFactorConfirmationByUserId = async (userId: string) => {
         eq(twoFactorConfirmation.userId, userId),
     });
 
+    return tfConfirmation;
+  } catch {
+    return null;
+  }
+};
+
+export const createTwoFactorConfirmation = async (
+  data: TTwoFactorConfirmation,
+) => {
+  try {
+    const [tfConfirmation] = await db
+      .insert(twoFactorConfirmation)
+      .values(data)
+      .returning({
+        id: twoFactorConfirmation.id,
+        userId: twoFactorConfirmation.userId,
+      });
     return tfConfirmation;
   } catch {
     return null;

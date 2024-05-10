@@ -5,50 +5,8 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1710512151131,
-      "tag": "0000_young_payback",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1710521814205,
-      "tag": "0001_wild_lilandra",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1710949550861,
-      "tag": "0002_magical_night_nurse",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1711329470224,
-      "tag": "0003_concerned_starbolt",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "5",
-      "when": 1714937664505,
-      "tag": "0004_premium_black_cat",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "5",
-      "when": 1714938091966,
-      "tag": "0005_neat_carmella_unuscione",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "5",
-      "when": 1714938413048,
-      "tag": "0006_brainy_shiver_man",
+      "when": 1715043659044,
+      "tag": "0000_dark_tarot",
       "breakpoints": true
     }
   ]
